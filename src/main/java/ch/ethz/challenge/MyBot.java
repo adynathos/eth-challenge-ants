@@ -7,10 +7,26 @@ import java.util.*;
  * Starter bot implementation.
  */
 public class MyBot extends Bot {
-	public Database database = new Database();
+	public Ants api;
 	
 	public Map<UnitRole, Strategy> strategies = new EnumMap<UnitRole, Strategy>(UnitRole.class);
 	
+	ArrayList<Unit> unitsAll;
+	
+	Map<Tile, Unit> unitsByPositionNext = new HashMap<Tile, Unit>();
+	
+	ArrayList<Tile> enemies;
+	
+	ArrayList<Tile> ourBases;
+	
+	ArrayList<Tile> enemyBases;
+
+	private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
+
+    private Set<Tile> unseenTiles;
+
+    private Set<Tile> enemyHills = new HashSet<Tile>();
+
     /**
      * Main method executed by the game engine for starting the bot.
      * 
@@ -21,14 +37,7 @@ public class MyBot extends Bot {
     public static void main(String[] args) throws IOException {
         new MyBot().readSystemInput();
     }
-
-	private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
-
-    private Set<Tile> unseenTiles;
-
-    private Set<Tile> enemyHills = new HashSet<Tile>();
-
-
+    
     private List<Tile> getInterestingPoints(int n) {
         List<Tile> l = new LinkedList<Tile>();
 
@@ -75,16 +84,57 @@ public class MyBot extends Bot {
         return false;
     }
 
+    public void update() {
+    	Ants api = getAnts();
+    	
+		for(Unit u : unitsAll) {
+			u.setAim(null);
+		}
+		
+//		unitPositions.clear();
+//		unitPositions.addAll(api.getMyAnts());
+
+		unitsAll.clear();
+		for (Tile myAntPos : api.getMyAnts()) {
+			Unit u = unitsByPositionNext.getOrDefault(myAntPos, null);
+			
+			if(u == null)
+			{
+				u = new Unit(api);
+				u.positionNow = myAntPos;
+				
+				unitsAll.add(u);
+			}
+			else
+			{
+				unitsAll.add(u);
+			}
+		}
+		
+		for(Unit u : unitsAll)
+		{
+			float bestPrio = 0;
+			UnitRole bestRole = UnitRole.JustCreated;
+			
+			for (Map.Entry<UnitRole, Strategy> entry : strategies.entrySet())
+			{
+				float prio = entry.getValue().priority(u);
+				if(prio > bestPrio)
+				{
+					
+				}
+			}
+			
+        }
+	}
+    
     /**
      * For every ant check every direction in fixed order (N, E, S, W) and move it if the tile is
      * passable.
      */
     @Override
     public void doTurn() {
-	    Ants api = getAnts();
-        
-        this.database.api = api;
-        this.database.update();
+	    api = getAnts();
 
 
         Ants ants = getAnts();

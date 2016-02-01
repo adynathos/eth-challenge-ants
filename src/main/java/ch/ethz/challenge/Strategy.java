@@ -1,7 +1,7 @@
 package ch.ethz.challenge;
 
 public abstract class Strategy {
-	public Database database; // set after contruction automatically
+	public MyBot database; // set after contruction automatically
 	
 	public abstract UnitRole myRole();	
 	
