@@ -1,5 +1,3 @@
-package ch.ethz.challenge;
-
 /**
  * Provides basic game state handling.
  */

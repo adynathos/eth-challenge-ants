@@ -1,4 +1,5 @@
 package ch.ethz.challenge;
+import java.util.*;
 
 // Example strategy
 public class StrategyWorker extends Strategy {
@@ -14,8 +15,16 @@ public class StrategyWorker extends Strategy {
 		if (u.roleNow == UnitRole.Worker){
 			res += 0.5f;
 		}
-		if (u.getFoodAmount > 0){
+		if (u.getFoodAmount() > 0){
 			res += 0.5f;
+		}
+		
+		Set<Tile> enemy = getApi().getEnemyAnts();
+		
+		for(Tile e : enemy){
+			if (DistanceUtil.Dist(e, u.positionNext) < 10){
+				res /= 1.1;
+			}
 		}
 		
 		return res;

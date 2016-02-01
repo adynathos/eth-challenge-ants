@@ -1,5 +1,3 @@
-package ch.ethz.challenge;
-
 /**
  * Represents an order to be issued.
  */
