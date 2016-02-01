@@ -22,8 +22,15 @@ public class StrategyWorker extends Strategy {
 		Set<Tile> enemy = getApi().getEnemyAnts();
 		
 		for(Tile e : enemy){
-			if (database.api.getDistance(e, u.positionNext) < 10){
-				res /= 1.1;
+			if (database.api.getDistance(e, u.positionNow) < 10){
+				res *= 0.9;
+			}
+		}
+		
+		for (Tile f : database.api.getFoodTiles()){
+			int dist = database.api.getDistance(u.positionNow, f);
+			if (dist < 30){
+				res *= 1.1;
 			}
 		}
 		
@@ -49,7 +56,16 @@ public class StrategyWorker extends Strategy {
 			}
 			
 			BFS bfs = new BFS (u.positionNow, closestBase, database);
-			u.setAim(bfs.goTo(true));
+			
+			Aim aim = bfs.goTo(true);
+			
+			if (!database.unitsByPositionNext.containsKey(aim.transformedTile(u.positionNow))){
+				u.setAim(aim);
+			}
+			else{
+				u.setAim(null);
+			}
+			
 		}
 		else { // Looking for food.
 			Tile closestFood = null;
@@ -63,7 +79,14 @@ public class StrategyWorker extends Strategy {
 				}
 			}
 			BFS bfs = new BFS (u.positionNow, closestFood, database);
-			u.setAim(bfs.goTo(true));
+			Aim aim = bfs.goTo(true);
+			
+			if (!database.unitsByPositionNext.containsKey(aim.transformedTile(u.positionNow))){
+				u.setAim(aim);
+			}
+			else{
+				u.setAim(null);
+			}
 		}
 		u.roleNext = myRole();
 	}
