@@ -78,7 +78,7 @@ public enum Aim {
         return symbolLookup.get(symbol);
     }
     
-    public Tile transformedTile(Tile fromTile) {
-        	return new Tile(fromTile.getRow() + this.getRowDelta(), fromTile.getCol() + this.getColDelta());
+    public Tile transformedTile(Tile fromTile, Ants api) {
+        	return new Tile((fromTile.getRow() + this.getRowDelta()) % api.getRows() , (fromTile.getCol() + this.getColDelta()) % api.getCols());
     }
 }

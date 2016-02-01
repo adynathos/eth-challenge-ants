@@ -55,7 +55,6 @@ public class StrategyFighter extends Strategy {
 			u.setAim(null);
 		}
 		
-		u.roleNext = myRole();
 	}
 	
 }

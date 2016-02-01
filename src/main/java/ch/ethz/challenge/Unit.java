@@ -6,7 +6,6 @@ public class Unit {
 	public Tile positionNow;
 	public Tile positionNext;
 	public UnitRole roleNow = UnitRole.JustCreated;
-	public UnitRole roleNext;
 	public Aim nextAim;	
 	
 	public Unit(MyBot db) {
@@ -21,7 +20,7 @@ public class Unit {
 		}
 		else
 		{
-			this.positionNext = aim.transformedTile(this.positionNow);
+			this.positionNext = aim.transformedTile(this.positionNow, database.api);
 		}
 	}
 	
