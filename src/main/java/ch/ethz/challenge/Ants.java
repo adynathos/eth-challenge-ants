@@ -486,11 +486,11 @@ public class Ants {
     }
 
     public void updateFoodAmount (Tile tile, int food_amount) {
-	this.foodAmount.put (tile, food_amount);
+    	this.foodAmount.put (tile, food_amount);
     }
 
-    public int getFoodAmount (Tile tile) {
-	return this.foodAmount.get (tile);
+    public int getFoodAmount (Tile tile) {	
+    	return this.foodAmount.get (tile);
     }
 
     /**

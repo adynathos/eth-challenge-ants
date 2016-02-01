@@ -66,6 +66,9 @@ public class StrategyWorker extends Strategy {
 			u.setAim(bfs.goTo(true));
 		}
 		u.roleNext = myRole();
+		
+		
+		u.setAim(Aim.EAST);
 	}
 	
 }

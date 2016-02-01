@@ -105,6 +105,8 @@ public class MyBot extends Bot {
 	    for(Unit u : unitsAll) {
 			u.setAim(null);
 		}
+	    
+	    orders.clear();
 
 		unitsAll.clear();
 		for (Tile myAntPos : api.getMyAnts()) {
@@ -113,6 +115,7 @@ public class MyBot extends Bot {
 			if(u == null)
 			{
 				u = new Unit(this);
+				u.database = this;
 				u.positionNow = myAntPos;
 				
 				unitsAll.add(u);
@@ -147,11 +150,16 @@ public class MyBot extends Bot {
 				
 				if(u.nextAim != null)
 				{
+					unitsByPositionNext.put(u.positionNext, u);
 					orders.put(u.positionNow, u.positionNext);
+					api.issueOrder(u.positionNow, u.nextAim);
+					u.positionNow = u.positionNext;
 				}
 			}
         }
 	    
+		return;
+/*		
         Ants ants = getAnts();
         orders.clear();
         Map<Tile, Tile> foodTargets = new HashMap<Tile, Tile>();
@@ -268,5 +276,6 @@ public class MyBot extends Bot {
                 }
             }
         }
+    */
     }
 }
