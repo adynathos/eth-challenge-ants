@@ -2,7 +2,7 @@ package ch.ethz.challenge;
 
 // Example strategy
 public class StrategyWorker extends Strategy {
-
+	
 	@Override
 	public UnitRole myRole() {
 		return UnitRole.Worker;
