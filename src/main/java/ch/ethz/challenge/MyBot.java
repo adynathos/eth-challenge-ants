@@ -28,6 +28,7 @@ public class MyBot extends Bot {
             for (Aim direction : Aim.values()) {
                 if (ants.getIlk(myAnt, direction).isPassable()) {
                     ants.issueOrder(myAnt, direction);
+                   
                     break;
                 }
             }
