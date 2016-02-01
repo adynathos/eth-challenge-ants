@@ -79,6 +79,7 @@ public class StrategyWorker extends Strategy {
 				}
 			}
 			BFS bfs = new BFS (u.positionNow, closestFood, database);
+
 			Aim aim = bfs.goTo(true);
 			
 			if (!database.unitsByPositionNext.containsKey(aim.transformedTile(u.positionNow))){
@@ -88,7 +89,7 @@ public class StrategyWorker extends Strategy {
 				u.setAim(null);
 			}
 		}
-		u.roleNext = myRole();
+
 	}
 	
 }
