@@ -64,11 +64,7 @@ public class StrategyWorker extends Strategy {
 			}
 			BFS bfs = new BFS (u.positionNow, closestFood, database);
 			u.setAim(bfs.goTo(true));
-		}
-		u.roleNext = myRole();
-		
-		
-		u.setAim(Aim.EAST);
+		}		
 	}
 	
 }
