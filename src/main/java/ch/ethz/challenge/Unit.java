@@ -5,7 +5,7 @@ public class Unit {
 	
 	public Tile positionNow;
 	public Tile positionNext;
-	public UnitRole roleNow;
+	public UnitRole roleNow = UnitRole.JustCreated;
 	public UnitRole roleNext;
 	public Aim nextAim;	
 	

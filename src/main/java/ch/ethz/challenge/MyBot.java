@@ -74,6 +74,11 @@ public class MyBot extends Bot {
      */
     @Override
     public void doTurn() {
+	    Ants api = getAnts();
+        
+        this.database.api = api;
+        this.database.update();
+
 
         Ants ants = getAnts();
         orders.clear();
@@ -188,7 +193,6 @@ public class MyBot extends Bot {
                     if (doMoveDirection(myHill, direction)) {
                         break;
                     }
-
                 }
             }
         }
