@@ -490,7 +490,7 @@ public class Ants {
     }
 
     public int getFoodAmount (Tile tile) {	
-    	return this.foodAmount.get (tile);
+    	return this.foodAmount.getOrDefault(tile, 0);
     }
 
     /**

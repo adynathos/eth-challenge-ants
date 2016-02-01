@@ -16,10 +16,6 @@ public class MyBot extends Bot {
 	Map<Tile, Unit> unitsByPositionNext = new HashMap<Tile, Unit>();
 	
 	ArrayList<Tile> enemies = new ArrayList<Tile>();
-	
-	ArrayList<Tile> ourBases = new ArrayList<Tile>(); 
-	
-	ArrayList<Tile> enemyBases = new ArrayList<Tile>();
 
 	private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
 
@@ -46,6 +42,14 @@ public class MyBot extends Bot {
         Strategy s1 = new StrategyWorker();
         s1.database = this;
         this.strategies.put(s1.myRole(), s1);
+        
+        Strategy s2 = new StrategyFighter();
+        s2.database = this;
+        this.strategies.put(s2.myRole(), s2);
+        
+        Strategy s3 = new StrategyExplore();
+        s3.database = this;
+        this.strategies.put(s3.myRole(), s3);
     }
     
     private List<Tile> getInterestingPoints(int n) {
@@ -100,8 +104,8 @@ public class MyBot extends Bot {
      */
     @Override
     public void doTurn() {
-	    api = getAnts();
-
+    	api = getAnts();
+    	
 	    for(Unit u : unitsAll) {
 			u.setAim(null);
 		}
@@ -116,14 +120,10 @@ public class MyBot extends Bot {
 			{
 				u = new Unit(this);
 				u.database = this;
-				u.positionNow = myAntPos;
-				
-				unitsAll.add(u);
 			}
-			else
-			{
-				unitsAll.add(u);
-			}
+			u.positionNow = myAntPos;
+			
+			unitsAll.add(u);
 		}
 		
 		for(Unit u : unitsAll)

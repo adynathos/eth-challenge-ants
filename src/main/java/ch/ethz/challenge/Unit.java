@@ -8,6 +8,8 @@ public class Unit {
 	public UnitRole roleNow = UnitRole.JustCreated;
 	public Aim nextAim;	
 	
+	public Tile explorationTarget = null;
+	
 	public Unit(MyBot db) {
 		this.database = db;
 	}
@@ -20,11 +22,11 @@ public class Unit {
 		}
 		else
 		{
-			this.positionNext = aim.transformedTile(this.positionNow, database.api);
+			this.positionNext = database.api.getTile(this.positionNow, aim);
 		}
 	}
 	
 	public int getFoodAmount() {
-		return database.api.getFoodAmount(this.positionNow);
+		return database.getAnts().getFoodAmount(this.positionNow);
 	}
 }

@@ -40,14 +40,14 @@ public class StrategyWorker extends Strategy {
 	@Override
 	public void perform(Unit u) {
 		if (u.getFoodAmount() > 0){ // Bringing food home.
-			if (database.ourBases.size() < 1){
+			if (database.api.getMyHills().size() < 1){
 				return; // No home :(
 			}
 			
 			Tile closestBase = null;
 			int minDist = Integer.MAX_VALUE;
 			
-			for (Tile b : database.ourBases){
+			for (Tile b : database.api.getMyHills()){
 				int dist = database.api.getDistance(u.positionNow, b);
 				if (dist < minDist){
 					minDist = dist;
@@ -59,7 +59,7 @@ public class StrategyWorker extends Strategy {
 			
 			Aim aim = bfs.goTo(true);
 			
-			if (!database.unitsByPositionNext.containsKey(aim.transformedTile(u.positionNow))){
+			if (!database.unitsByPositionNext.containsKey(aim.transformedTile(u.positionNow, database.api))){
 				u.setAim(aim);
 			}
 			else{
@@ -78,16 +78,25 @@ public class StrategyWorker extends Strategy {
 					closestFood = f;
 				}
 			}
-			BFS bfs = new BFS (u.positionNow, closestFood, database);
-
-			Aim aim = bfs.goTo(true);
 			
-			if (!database.unitsByPositionNext.containsKey(aim.transformedTile(u.positionNow))){
-				u.setAim(aim);
+			if(closestFood != null)
+			{
+				BFS bfs = new BFS (u.positionNow, closestFood, database);
+
+				Aim aim = bfs.goTo(true);
+				
+				if (!database.unitsByPositionNext.containsKey(aim.transformedTile(u.positionNow, database.api))){
+					u.setAim(aim);
+				}
+				else{
+					u.setAim(null);
+				}
 			}
-			else{
+			else
+			{
 				u.setAim(null);
 			}
+			
 		}
 
 	}

@@ -6,7 +6,7 @@ public class StrategyFighter extends Strategy {
 	
 	@Override
 	public UnitRole myRole() {
-		return UnitRole.Worker;
+		return UnitRole.Fighter;
 	}
 
 	@Override
@@ -38,20 +38,33 @@ public class StrategyFighter extends Strategy {
 		Tile closestBase = null;
 		int minDist = Integer.MAX_VALUE;
 		
-		for (Tile b : database.enemyBases){
+		for (Tile b : database.api.getEnemyHills()){
 			int dist = database.api.getDistance(u.positionNow, b);
 			if (dist < minDist){
 				minDist = dist;
 				closestBase = b;
 			}
 		}
-		BFS bfs = new BFS (u.positionNow, closestBase, database);
-		Aim aim = bfs.goTo(true);
 		
-		if (!database.unitsByPositionNext.containsKey(aim.transformedTile(u.positionNow))){
-			u.setAim(aim);
+		if(closestBase != null)
+		{
+			if(database.api == null)
+			{
+				return;
+			}
+			
+			BFS bfs = new BFS (u.positionNow, closestBase, database);
+			Aim aim = bfs.goTo(true);
+
+			if (!database.unitsByPositionNext.containsKey(aim.transformedTile(u.positionNow, database.api))){
+				u.setAim(aim);
+			}
+			else{
+				u.setAim(null);
+			}
 		}
-		else{
+		else
+		{
 			u.setAim(null);
 		}
 		
