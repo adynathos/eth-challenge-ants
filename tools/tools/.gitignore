@@ -1,0 +1,11 @@
+*.pyc
+*.class
+game_logs
+mybots
+myjava
+notes.txt
+\#*\#
+.\#*
+*~
+last_game_id
+dryrun-results/
