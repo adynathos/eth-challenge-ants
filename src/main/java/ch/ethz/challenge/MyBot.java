@@ -1,11 +1,18 @@
 package ch.ethz.challenge;
 
 import java.io.IOException;
+import java.util.EnumMap;
+import java.util.Map;
+
 
 /**
  * Starter bot implementation.
  */
 public class MyBot extends Bot {
+	public Database database = new Database();
+	
+	public Map<UnitRole, Strategy> strategies = new EnumMap<UnitRole, Strategy>(UnitRole.class);
+	
     /**
      * Main method executed by the game engine for starting the bot.
      * 
@@ -23,11 +30,15 @@ public class MyBot extends Bot {
      */
     @Override
     public void doTurn() {
-        Ants ants = getAnts();
-        for (Tile myAnt : ants.getMyAnts()) {
+        Ants api = getAnts();
+        
+        this.database.api = api;
+        this.database.update();
+        
+        for (Tile myAnt : api.getMyAnts()) {
             for (Aim direction : Aim.values()) {
-                if (ants.getIlk(myAnt, direction).isPassable()) {
-                    ants.issueOrder(myAnt, direction);
+                if (api.getIlk(myAnt, direction).isPassable()) {
+                    api.issueOrder(myAnt, direction);
                     break;
                 }
             }
