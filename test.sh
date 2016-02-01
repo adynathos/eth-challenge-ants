@@ -1,7 +1,7 @@
 #!/bin/bash
 mvn package
 python tools/playgame.py \
-	"java -jar target/T19Bot-1.jar" \
+	"java -jar MyBot.jar" \
 	"python tools/sample_bots/python/HunterBot.py" \
 	--map_file tools/maps/example/tutorial1.map \
 	--log_dir game_logs \
