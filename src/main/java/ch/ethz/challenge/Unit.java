@@ -1,7 +1,7 @@
 package ch.ethz.challenge;
 
 public class Unit {
-	protected Ants api;
+	protected MyBot database;
 	
 	public Tile positionNow;
 	public Tile positionNext;
@@ -9,8 +9,8 @@ public class Unit {
 	public UnitRole roleNext;
 	public Aim nextAim;	
 	
-	public Unit(Ants api) {
-		this.api = api;
+	public Unit(MyBot db) {
+		this.database = db;
 	}
 	
 	public void setAim(Aim aim) {
@@ -26,6 +26,6 @@ public class Unit {
 	}
 	
 	public int getFoodAmount() {
-		return api.getFoodAmount(this.positionNow);
+		return database.api.getFoodAmount(this.positionNow);
 	}
 }

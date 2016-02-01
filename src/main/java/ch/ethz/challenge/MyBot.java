@@ -11,19 +11,19 @@ public class MyBot extends Bot {
 	
 	public Map<UnitRole, Strategy> strategies = new EnumMap<UnitRole, Strategy>(UnitRole.class);
 	
-	ArrayList<Unit> unitsAll;
+	ArrayList<Unit> unitsAll = new ArrayList<Unit>();
 	
 	Map<Tile, Unit> unitsByPositionNext = new HashMap<Tile, Unit>();
 	
-	ArrayList<Tile> enemies;
+	ArrayList<Tile> enemies = new ArrayList<Tile>();
 	
-	ArrayList<Tile> ourBases;
+	ArrayList<Tile> ourBases = new ArrayList<Tile>(); 
 	
-	ArrayList<Tile> enemyBases;
+	ArrayList<Tile> enemyBases = new ArrayList<Tile>();
 
 	private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
 
-    private Set<Tile> unseenTiles;
+    private Set<Tile> unseenTiles = new HashSet<Tile>();
 
     private Set<Tile> enemyHills = new HashSet<Tile>();
 
@@ -36,6 +36,16 @@ public class MyBot extends Bot {
      */
     public static void main(String[] args) throws IOException {
         new MyBot().readSystemInput();
+    }
+    
+    public void setup(int loadTime, int turnTime, int rows, int cols, int turns, int viewRadius2,
+            int attackRadius2, int spawnRadius2) {
+        super.setup(loadTime, turnTime, rows, cols, turns, viewRadius2, attackRadius2,
+            spawnRadius2);
+        
+        Strategy s1 = new StrategyWorker();
+        s1.database = this;
+        this.strategies.put(s1.myRole(), s1);
     }
     
     private List<Tile> getInterestingPoints(int n) {
@@ -83,16 +93,18 @@ public class MyBot extends Bot {
         }
         return false;
     }
+    
+    /**
+     * For every ant check every direction in fixed order (N, E, S, W) and move it if the tile is
+     * passable.
+     */
+    @Override
+    public void doTurn() {
+	    api = getAnts();
 
-    public void update() {
-    	Ants api = getAnts();
-    	
-		for(Unit u : unitsAll) {
+	    for(Unit u : unitsAll) {
 			u.setAim(null);
 		}
-		
-//		unitPositions.clear();
-//		unitPositions.addAll(api.getMyAnts());
 
 		unitsAll.clear();
 		for (Tile myAntPos : api.getMyAnts()) {
@@ -100,7 +112,7 @@ public class MyBot extends Bot {
 			
 			if(u == null)
 			{
-				u = new Unit(api);
+				u = new Unit(this);
 				u.positionNow = myAntPos;
 				
 				unitsAll.add(u);
@@ -113,7 +125,7 @@ public class MyBot extends Bot {
 		
 		for(Unit u : unitsAll)
 		{
-			float bestPrio = 0;
+			float bestPrio = -1;
 			UnitRole bestRole = UnitRole.JustCreated;
 			
 			for (Map.Entry<UnitRole, Strategy> entry : strategies.entrySet())
@@ -121,22 +133,25 @@ public class MyBot extends Bot {
 				float prio = entry.getValue().priority(u);
 				if(prio > bestPrio)
 				{
-					
+					bestRole = entry.getValue().myRole();
+					bestPrio = prio;
+				}
+				
+				u.roleNow = bestRole;
+				Strategy s = strategies.getOrDefault(bestRole, null);
+				
+				if(s != null)
+				{
+					s.perform(u);
+				}
+				
+				if(u.nextAim != null)
+				{
+					orders.put(u.positionNow, u.positionNext);
 				}
 			}
-			
         }
-	}
-    
-    /**
-     * For every ant check every direction in fixed order (N, E, S, W) and move it if the tile is
-     * passable.
-     */
-    @Override
-    public void doTurn() {
-	    api = getAnts();
-
-
+	    
         Ants ants = getAnts();
         orders.clear();
         Map<Tile, Tile> foodTargets = new HashMap<Tile, Tile>();
