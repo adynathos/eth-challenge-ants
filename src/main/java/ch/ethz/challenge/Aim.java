@@ -1,3 +1,5 @@
+package ch.ethz.challenge;
+
 import java.util.HashMap;
 import java.util.Map;
 
