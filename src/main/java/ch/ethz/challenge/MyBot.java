@@ -1,3 +1,5 @@
+package ch.ethz.challenge;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -5,17 +7,22 @@ import java.util.*;
  * Starter bot implementation.
  */
 public class MyBot extends Bot {
+	public Database database = new Database();
+	
+	public Map<UnitRole, Strategy> strategies = new EnumMap<UnitRole, Strategy>(UnitRole.class);
+	
     /**
      * Main method executed by the game engine for starting the bot.
-     *
+     * 
      * @param args command line arguments
+     * 
      * @throws IOException if an I/O error occurs
      */
     public static void main(String[] args) throws IOException {
         new MyBot().readSystemInput();
     }
 
-    private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
+	private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
 
     private Set<Tile> unseenTiles;
 
@@ -197,7 +204,4 @@ public class MyBot extends Bot {
             }
         }
     }
-
-
-
 }

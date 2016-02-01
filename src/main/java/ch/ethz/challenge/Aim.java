@@ -1,3 +1,5 @@
+package ch.ethz.challenge;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,5 +76,9 @@ public enum Aim {
      */
     public static Aim fromSymbol(char symbol) {
         return symbolLookup.get(symbol);
+    }
+    
+    public Tile transformedTile(Tile fromTile) {
+        	return new Tile(fromTile.getRow() + this.getRowDelta(), fromTile.getCol() + this.getColDelta());
     }
 }

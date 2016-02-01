@@ -1,3 +1,5 @@
+package ch.ethz.challenge;
+
 /**
  * Represents a tile of the game map.
  */

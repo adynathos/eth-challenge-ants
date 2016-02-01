@@ -1,3 +1,5 @@
+package ch.ethz.challenge;
+
 /**
  * Represents a route from one tile to another.
  */

@@ -63,12 +63,6 @@ public class Database {
 				}
 			}
 			
-            for (Aim direction : Aim.values()) {
-                if (api.getIlk(myAnt, direction).isPassable()) {
-                    api.issueOrder(myAnt, direction);
-                    break;
-                }
-            }
         }
 	}
 }
